@@ -10,26 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let nextParent;
 
         if(currentParent.classList.contains('circle')){
-            currentParent.classList.remove('shake');
-            
+            currentParent.classList.remove('shake'); 
         }
         
-        const targetCircles = ['circle-2', 'circle-6', 'circle-8', 'circle-16'];
-        if (targetCircles.includes(currentParent.id)) {
-            const lily  = currentParent.querySelector('.lily-img');
-            const crocodile = currentParent.querySelector('.crocodile-img');
-
-            lily.style.display = 'none';
-            currentFrog.style.display = 'none';
-            crocodile.style.display = 'block';
-
-            setTimeout(()=> {
-                modal.style.display = 'block';
-            }, 100);
-
-
-            return;
-        }
 
         if (currentParent.classList.contains('bottom-left')) {
             switch (e.key) {
@@ -64,13 +47,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 default: return;
             }
-            if (nextIndex >= 1 && nextIndex <= 16 ) {
+
+            const handleFrogMovement = (nextIndex, currentFrog) => {
+                const circleId = `circle-${nextIndex}`;
+                const nextParent = document.getElementById(circleId);
+                const lily = nextParent.querySelector('.lily-img');
+                const crocodile = nextParent.querySelector('.crocodile-img');
+
+                lily.style.display = 'none';
+                currentFrog.style.display = 'none';
+                crocodile.style.display = 'block';
+
+                setTimeout(() => {
+                    modal.style.display = 'block';
+                }, 100);
+            }
+
+            if ([2,6,8,16].includes(nextIndex)){
+                handleFrogMovement(nextIndex, currentFrog);
+                return;
+            }
+            else if (nextIndex >= 1 && nextIndex <= 15 && nextIndex !== 2 && nextIndex !== 6 && nextIndex !== 8) {
                 nextParent = document.getElementById('circle-' + nextIndex);
                 if (nextParent) {
                     nextParent.appendChild(currentFrog);
                 }
-            }
-        }
+            }}
         if(currentParent.id === 'circle-4' && (e.key === 'ArrowRight' || e.key === 'ArrowUp')){
             let topRight = document.querySelector('.landscape.top-right');
             topRight.appendChild(currentFrog);
